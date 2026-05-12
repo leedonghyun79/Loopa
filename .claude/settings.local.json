@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"/d/작업실/study/projects/Loopa\" && ls -la)",
+      "Read(//d/d/작업실/study/projects/**)",
+      "Bash(cd \"/d/작업실/study/projects/Loopa\" && find . -type f -name \".*\" | head -20)",
+      "PowerShell(npm install @nestjs/config @nestjs/typeorm typeorm pg class-validator class-transformer bcrypt @nestjs/jwt @nestjs/passport passport passport-jwt socket.io)",
+      "PowerShell(npm list @nestjs/config @nestjs/typeorm typeorm pg)",
+      "PowerShell(npm list class-validator class-transformer bcrypt @nestjs/jwt @nestjs/passport passport passport-jwt socket.io)",
+      "PowerShell(git init)",
+      "PowerShell(git commit -m \"chore: install required dependencies\")",
+      "PowerShell(head -5)",
+      "Bash(npm list *)",
+      "Bash(npm ls *)",
+      "Bash(npm audit *)",
+      "Bash(ConvertFrom-Json -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object -Property vulnerabilities, metadata)",
+      "Bash(ConvertTo-Json -Depth 2)",
+      "Bash(npm view *)",
+      "Bash(Get-Item -Path .)",
+      "Bash(Select-Object -ExpandProperty FullName)",
+      "Bash(npm run *)",
+      "Bash(Get-ChildItem -Path \"d:\\\\작업실\\\\study\\\\projects\\\\Loopa\" -Recurse -Include \"main.ts\")",
+      "Bash(tee server.log)",
+      "Bash(npm install *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr \":3000\")",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(pkill -f \"nest start\")",
+      "Bash(node -e \"const config = require\\('./dist/config/database.config.ts'\\); console.log\\('Config loads successfully'\\)\")"
+    ]
+  }
+}
