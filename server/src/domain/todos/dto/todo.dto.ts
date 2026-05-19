@@ -13,13 +13,13 @@ export class CreateTodoDto {
 export class UpdateTodoDto {
   @IsOptional()
   @IsString()
-  todo?: string;
+  todo!: string;
 
   @IsOptional()
   @IsBoolean()
-  isCompleted?: boolean;
+  isCompleted!: boolean;
 
   @IsOptional()
   @IsDateString()
-  updatedAt?: string;
+  updatedAt!: string;
 }

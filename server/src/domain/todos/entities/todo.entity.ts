@@ -16,5 +16,5 @@ export class Todo {
   createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt?: Date;
+  updatedAt!: Date;
 }
