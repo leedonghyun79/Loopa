@@ -4,23 +4,27 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { typeOrmConfig } from './config/database.config';
+import { TodosModule } from './domain/todos/todos.module';
 
 @Module({
   imports: [
-    // 환경변수 설정 (전역으로 사용 가능)
+    // 환경변수 설정 (전역으로 사용 가능, 동기 작업)
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env.local',
     }),
 
-    // TypeORM 설정 (비동기)
+    // TypeORM 설정 (비동기 작업)
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async () => typeOrmConfig(),
       inject: [ConfigService],
     }),
+
+    // Todos 모듈
+    TodosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
