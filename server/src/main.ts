@@ -6,8 +6,12 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // CORS 활성화
+  app.enableCors();
+
   // Log raw body for troubleshooting malformed JSON from clients
-  app.use(bodyParser.json({ verify: (req, res, buf) => { (req as any).rawBody = buf.toString(); } }));
+  app.use(bodyParser.json({ limit: '10mb', verify: (req, res, buf) => { (req as any).rawBody = buf.toString(); } }));
+  app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
   app.use((req, res, next) => {
     if (req.path && req.path.startsWith('/todos')) {
       console.log('[RAW BODY]', (req as any).rawBody);

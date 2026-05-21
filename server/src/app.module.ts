@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { typeOrmConfig } from './config/database.config';
 import { TodosModule } from './domain/todos/todos.module';
+import { ProductsModule } from './domain/products/products.module';
 
 @Module({
   imports: [
@@ -23,6 +24,9 @@ import { TodosModule } from './domain/todos/todos.module';
 
     // Todos 모듈
     TodosModule,
+
+    // Products 모듈
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

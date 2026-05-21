@@ -33,31 +33,79 @@ const FEATURES = [
   { icon: MessageCircle, title: '실시간 채팅', desc: '판매자/구매자와 실시간으로 소통해보세요.' },
 ];
 
+export const dynamic = 'force-dynamic';
+
 // ── 페이지 (Server Component) ─────────────────────────────────────
-export default function HomePage() {
+export default async function HomePage() {
+  let displayProducts: Product[] = [];
+  try {
+    const res = await fetch('http://localhost:5000/products', { cache: 'no-store' });
+    if (res.ok) {
+      const dbProducts = await res.json();
+      if (dbProducts && dbProducts.length > 0) {
+        displayProducts = dbProducts.slice(0, 24); // Show top 24 products
+      }
+    }
+  } catch (error) {
+    console.error('Failed to fetch real products from API:', error);
+  }
+
+  // Fallback to dummy products if API is empty or failed
+  if (displayProducts.length === 0) {
+    displayProducts = PRODUCTS;
+  }
+
   return (
     <div className="flex flex-col">
 
       {/* Hero 섹션 */}
-      <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/10 border-b border-border">
-        <div className="mx-auto max-w-screen-xl px-4 py-16 md:py-24 text-center">
-          <Badge variant="secondary" className="mb-4 text-xs">🎉 신규 가입 시 거래 수수료 0원</Badge>
-          <h1 className="text-3xl md:text-5xl font-bold tracking-tight leading-[1.3]">
-            내 근처에서 시작하는<br />
-            <span className="text-primary">스마트한 중고거래</span>
-          </h1>
-          <p className="mt-4 text-muted-foreground text-base md:text-lg max-w-md mx-auto">
-            Loopa에서 필요 없는 물건을 팔고,<br className="hidden md:block" />
-            원하는 물건을 저렴하게 구매하세요.
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-            <Button size="lg" className="gap-2">
-              지금 둘러보기
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-            <Button size="lg" variant="outline">
-              판매 시작하기
-            </Button>
+      <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/10 border-b border-border overflow-hidden">
+        <div className="mx-auto max-w-screen-xl px-4 py-12 md:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* 왼쪽: 메세지 */}
+            <div className="lg:col-span-7 text-center lg:text-left space-y-6">
+              <Badge variant="secondary" className="text-xs px-3 py-1 font-semibold rounded-full">
+                🎉 신규 가입 시 거래 수수료 0원
+              </Badge>
+              <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight leading-[1.25] text-foreground">
+                내 근처에서 시작하는<br />
+                <span className="text-primary bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent">스마트한 중고거래</span>
+              </h1>
+              <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                Loopa에서 안전하게 필요 없는 물건을 판매하고,<br />
+                이웃들의 질 좋고 유니크한 물건을 합리적인 가격에 구매해 보세요.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-2">
+                <Button size="lg" className="gap-2 rounded-2xl px-8 h-14 font-bold shadow-md hover:shadow-lg transition-all">
+                  지금 둘러보기
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+                <Button size="lg" variant="outline" className="rounded-2xl px-8 h-14 font-bold border-border/80 hover:bg-muted/10">
+                  판매 시작하기
+                </Button>
+              </div>
+            </div>
+            {/* 오른쪽: 제너레이트한 아름다운 3D 배너 이미지 */}
+            <div className="lg:col-span-5 flex justify-center">
+              <div className="relative w-full max-w-md lg:max-w-none aspect-[4/3] rounded-3xl overflow-hidden border border-border/60 shadow-xl bg-card/50 backdrop-blur-md p-1.5 group">
+                <img
+                  src="/images/banner.png"
+                  alt="Loopa Premium Platform Promotion"
+                  className="h-full w-full object-cover rounded-[20px] transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none rounded-[20px]" />
+                <div className="absolute bottom-4 left-4 right-4 bg-background/80 backdrop-blur-md border border-border/40 rounded-xl p-3 shadow-md flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">✨</span>
+                    <div>
+                      <p className="text-xs font-bold text-foreground">Loopa 트렌디 IT 기기 기획전</p>
+                      <p className="text-[10px] text-muted-foreground">지금 가장 핫한 중고 전자기기 모아보기</p>
+                    </div>
+                  </div>
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -95,8 +143,8 @@ export default function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4">
-          {PRODUCTS.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {displayProducts.map((product) => (
+            <ProductCard key={product.pid || product.id} product={product} />
           ))}
         </div>
       </section>
